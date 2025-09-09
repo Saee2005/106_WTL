@@ -1,0 +1,115 @@
+/* style2.css */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    height: 100vh;
+    background-image: url('https://www.10wallpaper.com/wallpaper/2560x1440/2010/Summer_Vacation_Beach_2020_Nature_Scenery_Photo_2560x1440.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.wrapper {
+    width: 420px;
+    background-color: rgba(255, 255, 255, 0.2); /* transparent white */
+    backdrop-filter: blur(10px); /* frosted glass effect */
+    padding: 40px 30px;
+    border-radius: 12px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
+    color: #fff;
+}
+
+.wrapper h1 {
+    text-align: center;
+    font-size: 32px;
+    margin-bottom: 30px;
+}
+
+.input-box {
+    margin-bottom: 20px;
+}
+
+.input-box input {
+    width: 100%;
+    padding: 15px;
+    font-size: 18px;
+    border: 1.5px solid #ccc;
+    border-radius: 8px;
+    outline: none;
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+}
+
+.input-box input::placeholder {
+    color: #ddd;
+}
+
+.input-box input:focus {
+    border-color: #fff;
+    box-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+}
+
+.remember-forgot {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 16px;
+    margin-bottom: 25px;
+}
+
+.remember-forgot label {
+    display: flex;
+    align-items: center;
+}
+
+.remember-forgot label input {
+    margin-right: 6px;
+    accent-color: #fff;
+}
+
+.remember-forgot a {
+    color: #fff;
+    text-decoration: none;
+}
+
+.remember-forgot a:hover {
+    text-decoration: underline;
+}
+
+.btn {
+    width: 100%;
+    padding: 14px;
+    background-color: rgba(0, 123, 255, 0.8);
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.btn:hover {
+    background-color: rgba(0, 123, 255, 1);
+}
+
+.register-link {
+    text-align: center;
+    font-size: 16px;
+    margin-top: 20px;
+    color: #fff;
+}
+
+.register-link a {
+    color: #fff;
+    text-decoration: underline;
+}

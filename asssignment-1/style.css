@@ -1,0 +1,39 @@
+body{
+    margin:0;
+    font-family:Arial;
+    background-image: url(https://static.vecteezy.com/system/resources/previews/025/871/495/original/travel-destination-background-and-template-design-with-travel-destinations-and-famous-landmarks-and-attractions-for-tourism-let-s-go-travel-illustration-vector.jpg);
+    background-position: center;
+}
+header{
+    display:flex;
+    align-items:center;
+    justify-content:space-around;
+    padding:30px 10px;
+}
+.navbar li{
+    list-style:none;
+    display:inline-block;
+    padding:50px;
+}
+.navbar li a:hover{
+    color:black;
+}
+li,
+a,
+button{
+    text-decoration: none;
+    font-weight:600;
+    font-size:20px;
+    color:blue;
+}
+.signup-btn{
+    border:2px solid black;
+    padding:5px 10px 5px 10px ;
+    border-radius:5px;
+}
+.contact-btn{
+    margin-left: 38%;
+}
+.booking-btn{
+    margin-left:10%;
+}
