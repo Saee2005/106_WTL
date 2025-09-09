@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Student Form</title>
+<style>
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    }
+.container {
+    display: flex;
+    height: 100vh;
+    }
+.right {
+    flex: 1;
+    padding: 40px;
+    background: #f4f6f9;
+    overflow-y: auto;
+    }
+form {
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    max-width: 400px;
+    }
+form input[type="text"],
+form input[type="password"] {
+    width: 95%;
+    padding: 10px;
+    margin: 8px 0;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 14px;
+    }
+button {
+    padding: 8px 16px;
+    margin: 5px 3px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: 0.3s;
+    }
+#btn {
+    background: #28a745;
+    color: white;
+    }
+#btn:hover { background: #218838; }
+#updateBtn {
+    background: #ffc107;
+    color: black;
+    }
+#updateBtn:hover { background: #e0a800; }
+#resultdiv {
+    margin-top: 10px;
+    font-weight: bold;
+    color: green;
+    }
+h3 {
+    margin-top: 30px;
+    color: #333;
+    }
+table {
+    width: 100%;
+    margin-top: 20px;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+table th, table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+    }
+table th {
+    background: #007bff;
+    color: white;
+    }
+table tr:nth-child(even) {
+    background: #f9f9f9;
+    }
+table button {
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 13px;
+    border: none;
+    cursor: pointer;
+    }
+table button:first-child {
+    background: #17a2b8;
+    color: white;
+    }
+table button:first-child:hover { background: #138496; }
+table button:last-child {
+    background: #dc3545;
+    color: white;
+    }
+table button:last-child:hover { background: #c82333; }
+</style>
+</head>
+<body>
+<div class="container">
+    <!-- Left column with background image -->
+    <div class="left"></div>
+
+    <!-- Right column with form and table -->
+    <div class="right">
+    <form id="myform">
+        <input type="hidden" id="student_id">
+        Enter Name : <input type="text" name="name" id="name"><br><br>
+        Enter PRN : <input type="password" name="pass" id="pass"><br><br>
+        <button type="button" id="btn">Insert</button>
+        <button type="button" id="updateBtn" style="display:none;">Update</button>
+    </form>
+
+    <div id="resultdiv"></div>
+
+    <h3>Student Record Table</h3>
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>PRN</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody id="tbody1"></tbody>
+    </table>
+    </div>
+</div>
+
+<script>
+    // Insert
+    async function send(){
+    let name = document.getElementById("name").value.trim();
+    let pass = document.getElementById("pass").value.trim();
+
+    if(name === "" || pass === ""){
+        document.getElementById("resultdiv").textContent = "Please enter both Name and Password.";
+        return;
+    }
+    let data = new FormData();
+    data.append("name", name);
+    data.append("pass", pass);
+    let response = await fetch("insert.php", {
+        method: "POST",
+        body: data
+    });
+    let result = await response.text();
+    document.getElementById("resultdiv").textContent = result;
+    document.getElementById("myform").reset();
+    getdata();
+    }
+    document.getElementById("btn").addEventListener("click", send);
+
+    // Fetch
+    async function getdata(){
+    let res = await fetch("fetch.php");
+    let data = await res.json();
+    document.getElementById("tbody1").innerHTML = "";
+    for(let i in data){
+        let row = document.createElement("tr");
+
+    row.innerHTML = `
+    <td>${data[i].id}</td>
+    <td>${data[i].name}</td>
+    <td>${data[i].pass}</td>
+    <td>
+    <button onclick="edit(${data[i].id}, '${data[i].name}', '${data[i].pass}')">Edit</button>
+    <button onclick="del(${data[i].id})">Delete</button>
+    </td>
+`;
+
+        document.getElementById("tbody1").append(row);
+    }
+    }
+
+    // Delete
+    async function del(id){
+    if(confirm("Are you sure you want to delete this record?")){
+        let data = new FormData();
+        data.append("id", id);
+
+        let res = await fetch("delete.php", {
+        method: "POST",
+        body: data
+        });
+        let result = await res.text();
+        document.getElementById("resultdiv").textContent = result;
+        getdata();
+    }
+    }
+
+    // Edit (Fill form with existing values)
+    function edit(id, name, pass){
+    document.getElementById("student_id").value = id;
+    document.getElementById("name").value = name;
+    document.getElementById("pass").value = pass;
+    document.getElementById("btn").style.display = "none";
+    document.getElementById("updateBtn").style.display = "inline";
+    }
+
+    // Update
+    async function updateRecord(){
+    let id = document.getElementById("student_id").value;
+    let name = document.getElementById("name").value.trim();
+    let pass = document.getElementById("pass").value.trim();
+    if(name === "" || pass === ""){
+        document.getElementById("resultdiv").textContent = "⚠ Please enter both Name and Password.";
+        return;
+    }
+    let data = new FormData();
+    data.append("id", id);
+    data.append("name", name);
+    data.append("pass", pass);
+    let res = await fetch("update.php", {
+        method: "POST",
+        body: data
+    });
+    let result = await res.text();
+    document.getElementById("resultdiv").textContent = result;
+    document.getElementById("myform").reset();
+    document.getElementById("btn").style.display = "inline";
+    document.getElementById("updateBtn").style.display = "none";
+    getdata();
+    }
+    document.getElementById("updateBtn").addEventListener("click", updateRecord);
+    window.onload = getdata;
+</script>
+</body>
+</html>
