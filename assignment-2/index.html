@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+  <title>Simple To-Do List</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h2>To-Do List</h2>
+    <input id="taskInput" type="text" placeholder="Add a task...">
+    <button id="addBtn">Add</button>
+    <ul id="taskList"></ul>
+  </div>
+
+  <script>
+    const taskInput = document.getElementById("taskInput");
+    const taskList = document.getElementById("taskList");
+    const addBtn = document.getElementById("addBtn");
+
+    // Add task
+    addBtn.addEventListener("click", () => {
+      const text = taskInput.value.trim();
+      if (text === "") return;
+
+      const li = document.createElement("li");
+      li.textContent = text;   // directly add text (no span)
+
+      const delBtn = document.createElement("button");
+      delBtn.textContent = "X";
+      delBtn.className = "delete";
+      li.appendChild(delBtn);
+
+      taskList.appendChild(li);
+      taskInput.value = "";
+    });
+
+    // Delete task
+    taskList.addEventListener("click", (e) => {
+      if (e.target.classList.contains("delete")) {
+        e.target.parentElement.remove(); // remove <li>
+      }
+    });
+  </script>
+</body>
+</html>
